@@ -16,6 +16,12 @@ cd pytorch-vsumm-reinforce
 wget http://www.eecs.qmul.ac.uk/~kz303/vsumm-reinforce/datasets.tar.gz
 tar -xvzf datasets.tar.gz
 ```
+
+or make datasets by youself
+```bash
+python video_forward2.py --makedatasets --dataset data_our/data_h5/data1.h5  --video-dir data_video/data1/ --frm-dir data_our/frames   
+```
+
 2. Make splits
 ```bash
 python create_split.py -d datasets/eccv16_dataset_summe_google_pool5.h5 --save-dir datasets --save-name summe_splits  --num-splits 5
@@ -71,7 +77,24 @@ python summary2video.py -p path_to/result.h5 -d path_to/video_frames -i 0 --fps 
 Please remember to specify the naming format of your video frames on this [line](https://github.com/KaiyangZhou/pytorch-vsumm-reinforce/blob/master/summary2video.py#L22).
 
 ## How to use your own data
-We preprocess data by extracting image features for videos and save them to `h5` file. The file format looks like [this](https://github.com/KaiyangZhou/vsumm-reinforce/issues/1#issuecomment-363492711). After that, you can make split via `create_split.py`. If you wanna train policy network using the entire dataset, just do `train_keys = dataset.keys()`. [Here](https://github.com/KaiyangZhou/pytorch-vsumm-reinforce/blob/master/main.py#L75) is the code where we initialize dataset. If you have any problems, feel free to contact me by email or raise an `issue`.
+
+### make datasets by youself
+Here I use the feature extracted by youtube8M at this [line](https://github.com/google/youtube-8m/tree/master/feature_extractor)
+--makedatasets:it is a flag tell the code to make datasets
+--video-dir:videodata direction
+--dataset:the h5 save direction
+**I doesn't generate frames ,because summary generate work make sumarry directly by the numpy data got by opencv.**
+```bash
+python video_forward2.py --makedatasets --dataset data_our/data_h5/data1.h5  --video-dir data_video/data1/  
+```
+
+### make score and make summary(you own data,and it doesn't have people summary)
+```bash
+python3 video_forward2.py --makescore --model log/summe-split0/model_epoch1000.pth.tar --gpu 0 --dataset data_our/data_h5/data2.h5 --save-dir logs/videolog/ \
+--summary  --frm-dir data_our/frames    
+```
+
+
 
 ## Citation
 ```
@@ -82,3 +105,4 @@ We preprocess data by extracting image features for videos and save them to `h5`
    year={2017} 
 }
 ```
+
