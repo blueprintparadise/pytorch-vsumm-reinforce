@@ -76,10 +76,10 @@ python3 video_forward.py --summary --dataset utils/train.h5 --frm-dir utils/fram
 args = parser.parse_args()
 
 torch.manual_seed(args.seed)
-os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-use_gpu = torch.cuda.is_available()
+#os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+#use_gpu = torch.cuda.is_available()
 if args.use_cpu: use_gpu = False
-
+use_gpu = False
 def main():
     sys.stdout = Logger(osp.join(args.save_dir, 'log_test.txt'))
     print("==========\nArgs:{}\n==========".format(args))
